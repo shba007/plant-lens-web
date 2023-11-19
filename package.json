@@ -2,6 +2,9 @@
   "name": "plant-lens",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": "^20.9.0"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "run-p type-check \"build-only {@}\" --",
