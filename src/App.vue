@@ -16,8 +16,8 @@ const { videoInputs: cameras } = useDevicesList({
 const { enabled: streamEnabled, stream } = useUserMedia({
   constraints: { video: true }
 })
-const { isInit: isModelInit, enabled: predictionEnabled, fps, prediction: plant, init: tfInit, loop: tfLoop } = useTF(video)
-const Plant = computed(() => plant.value?.name ? plants[plant.value.name] : undefined)
+const { isInit: isModelInit, enabled: predictionEnabled, fps, prediction, init: tfInit, loop: tfLoop } = useTF(video)
+const plant = computed(() => predictionEnabled.value && prediction.value?.name ? plants[prediction.value.name] : undefined)
 
 async function onHandleVideo() {
   streamEnabled.value = !streamEnabled.value
@@ -55,12 +55,12 @@ onBeforeMount(() => {
       </div>
       <div class="row-start-3 col-start-2 self-end flex gap-4">
         <BaseButton @click="onHandleVideo" icon="video-camera" class="p-2 scale-[.8]" />
-        <BaseButton icon="upload" class="p-2 scale-[.8]" />
+        <!-- <BaseButton icon="upload" class="p-2 scale-[.8]" /> -->
       </div>
       <video ref="video" v-if="streamEnabled"
         class="row-start-1 col-start-1 row-span-3 col-span-3 w-full h-full md:h-fit md:aspect-video object-cover rounded-md"
         autoplay muted playsinline />
     </section>
-    <CardDetails :id="plant?.name" :details="Plant" />
+    <CardDetails :details="plant" />
   </main>
 </template>

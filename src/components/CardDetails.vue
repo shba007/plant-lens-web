@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { icons } from '@/icons';
 import type { Plant } from '@/plants';
 
 const { details } = defineProps<{
@@ -9,8 +10,9 @@ const { details } = defineProps<{
 <template>
 	<aside class="flex-[2] flex flex-col bg-slate-800 h-screen overflow-x-hidden overflow-y-auto">
 		<template v-if="!details">
-			<div class="flex justify-center items-center w-full h-full">
-				Scan a plant to get is details
+			<div class="flex flex-col gap-1 justify-center items-center w-full h-full">
+				<img :src="icons['plant']" alt="plant" class="w-16">
+				<h6 class="text-lg">Scan a plant</h6>
 			</div>
 		</template>
 		<template v-else>

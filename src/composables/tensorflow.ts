@@ -20,11 +20,18 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 	const enabled = ref(false)
 	const fpsList: number[] = []
 	const fps = ref(0)
-	const plants = {
+	const plants: {
+		'aloe-vera': number[],
+		'golden-barrel-cactus': number[],
+		'lavender': number[],
+		'rose': number[],
+		'snake-plant': number[],
+	} = {
 		'aloe-vera': [],
 		'golden-barrel-cactus': [],
 		'lavender': [],
 		'rose': [],
+		'snake-plant': [],
 	}
 	const prediction = ref<{ name: 'aloe-vera' | 'golden-barrel-cactus' | 'lavender' | 'rose' | 'snake-plant', probability: number }>()
 
@@ -48,14 +55,18 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 		let output: any = null
 
 		for (const { className, probability } of prediction) {
-			if (!output) {
-				output = { name: className, probability: probability.toFixed(2) * 100 }
-			} else if (output.probability < probability * 100) {
-				output.name = className
-				output.probability = probability.toFixed(2) * 100
-			}
-		}
+			// @ts-ignore
+			plants[className].push(probability)
+			// @ts-ignore
+			if (plants[className].length > 200)
+				// @ts-ignore
+				plants[className].shift()
+			// @ts-ignore
+			const avg = runningAverage(plants[className], probability)
 
+			if (!output || output.probability < avg * 100)
+				output = { name: className, probability: parseFloat(avg.toFixed(2)) * 100 }
+		}
 		return output
 	}
 
@@ -68,7 +79,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 		prediction.value = await predict();
 
 		const end = performance.now()
-		fps.value = roundOff(runningAverage(fpsList, 1000 / (end - start)), 0)
+		fps.value = roundOff(runningAverage(fpsList, 1000 / (end - start)) as number, 0)
 
 		window.requestAnimationFrame(loop);
 	}
