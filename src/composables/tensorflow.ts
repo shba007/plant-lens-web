@@ -37,12 +37,11 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 
 	let model: any | undefined;
 
-	// Load the image model and setup the webcam
 	async function init() {
 		const modelURL = modelBaseURL + "model.json";
 		const metadataURL = modelBaseURL + "metadata.json";
 
-		// model = await tmImage.load(modelURL, metadataURL);
+		// @ts-ignore
 		model = await tmImage.load(modelURL, metadataURL);
 		isInit.value = true
 	}
