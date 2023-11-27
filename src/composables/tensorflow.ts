@@ -18,7 +18,7 @@ function runningAverage(nums: number[], newValue: number, bucketSize = 100) {
 export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 	const isInit = ref(false)
 	const enabled = ref(false)
-	const fpsList: number[] = []
+	const fpsArray: number[] = []
 	const fps = ref(0)
 	const plants: {
 		'aloe-vera': number[],
@@ -57,7 +57,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 			// @ts-ignore
 			plants[className].push(probability)
 			// @ts-ignore
-			if (plants[className].length > 200)
+			if (plants[className].length > 100)
 				// @ts-ignore
 				plants[className].shift()
 			// @ts-ignore
@@ -74,12 +74,10 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 			return
 
 		const start = performance.now()
-
 		prediction.value = await predict();
-
 		const end = performance.now()
-		fps.value = roundOff(runningAverage(fpsList, 1000 / (end - start)) as number, 0)
 
+		fps.value = roundOff(runningAverage(fpsArray, 1000 / (end - start)) as number, 0)
 		window.requestAnimationFrame(loop);
 	}
 
