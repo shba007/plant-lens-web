@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
+import { computed, onBeforeMount, ref, watchEffect } from 'vue';
 import { useDevicesList, useUserMedia } from '@vueuse/core'
 
 import { icons } from "@/icons";
@@ -24,9 +24,6 @@ async function onHandleVideo() {
   predictionEnabled.value = streamEnabled.value
 }
 
-/* watch(plant, () => {
-  console.log(plant.value)
-}) */
 watchEffect(() => {
   if (video.value && stream.value) {
     video.value.srcObject = stream.value

@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { icons } from '@/icons';
-import type { Plant } from '@/plants';
+import type { PlantDetails } from '@/model';
 
 const { details } = defineProps<{
-	details?: Plant
+	details?: PlantDetails
 }>()
 </script>
 
 <template>
-	<aside class="flex-[2] flex flex-col bg-slate-800 h-screen overflow-x-hidden overflow-y-auto">
+	<aside class="flex-[2] flex flex-col bg-slate-800 max-w-[320px] h-screen overflow-x-hidden overflow-y-auto">
 		<template v-if="!details">
 			<div class="flex flex-col gap-1 justify-center items-center w-full h-full">
 				<img :src="icons['plant']" alt="plant" class="w-16">

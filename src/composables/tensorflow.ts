@@ -1,13 +1,12 @@
+import { PlantName } from '@/model'
 import { ref, type Ref } from 'vue'
 // import * as tf from '@tensorflow/tfjs';
-
-const modelBaseURL = "/model/";
 
 function roundOff(num: number, significance = 2) {
 	return Math.round(num * (10 ** significance)) / (10 ** significance)
 }
 
-function runningAverage(nums: number[], newValue: number, bucketSize = 100) {
+function runningAverage(nums: number[], newValue: number, bucketSize = 50) {
 	if (nums.length >= bucketSize)
 		nums.shift()
 
@@ -20,29 +19,32 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 	const enabled = ref(false)
 	const fpsArray: number[] = []
 	const fps = ref(0)
-	const plants: {
-		'aloe-vera': number[],
-		'golden-barrel-cactus': number[],
-		'lavender': number[],
-		'rose': number[],
-		'snake-plant': number[],
-	} = {
+	const plants: Record<PlantName, number[]> = {
+		'bougainvillea': [],
 		'aloe-vera': [],
 		'golden-barrel-cactus': [],
 		'lavender': [],
 		'rose': [],
 		'snake-plant': [],
 	}
-	const prediction = ref<{ name: 'aloe-vera' | 'golden-barrel-cactus' | 'lavender' | 'rose' | 'snake-plant', probability: number }>()
+	const prediction = ref<{ name: keyof typeof PlantName, probability: number }>()
+	prediction.value = { name: "", probability: 0 }
 
 	let model: any | undefined;
 
 	async function init() {
-		const modelURL = modelBaseURL + "model.json";
-		const metadataURL = modelBaseURL + "metadata.json";
+		// model = await tf.loadLayersModel('localstorage://plant-recognizer');
 
-		// @ts-ignore
-		model = await tmImage.load(modelURL, metadataURL);
+		if (model === undefined) {
+			const modelBaseURL = "/model/";
+			const modelURL = modelBaseURL + "model.json";
+			const metadataURL = modelBaseURL + "metadata.json";
+
+			// @ts-ignore
+			model = await tmImage.load(modelURL, metadataURL);
+			// await model.save('localstorage://plant-recognizer');
+		}
+
 		isInit.value = true
 	}
 
