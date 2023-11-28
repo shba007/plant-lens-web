@@ -27,8 +27,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 		'rose': [],
 		'snake-plant': [],
 	}
-	const prediction = ref<{ name: keyof typeof PlantName, probability: number }>()
-	prediction.value = { name: "", probability: 0 }
+	const prediction = ref<{ name: PlantName, probability: number }>()
 
 	let model: any | undefined;
 
