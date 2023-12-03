@@ -1,5 +1,5 @@
-import { PlantName } from '@/model'
 import { ref, type Ref } from 'vue'
+import { PlantName } from '@/model'
 // import * as tf from '@tensorflow/tfjs';
 
 function roundOff(num: number, significance = 2) {
@@ -19,14 +19,10 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 	const enabled = ref(false)
 	const fpsArray: number[] = []
 	const fps = ref(0)
-	const plants: Record<PlantName, number[]> = {
-		'bougainvillea': [],
-		'aloe-vera': [],
-		'golden-barrel-cactus': [],
-		'lavender': [],
-		'rose': [],
-		'snake-plant': [],
-	}
+	// @ts-ignore
+	const plants: { [key in PlantName]: number[] } = Object.fromEntries(
+		Object.values(PlantName).map((name) => [name, [] as number[]])
+	);
 	const prediction = ref<{ name: PlantName, probability: number }>()
 
 	let model: any | undefined;
