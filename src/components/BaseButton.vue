@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { icons } from '@/icons';
 
-const props = withDefaults(defineProps<{
+withDefaults(defineProps<{
   icon?: string;
   title?: string;
   size?: "XS" | "S" | "M" | "L";
