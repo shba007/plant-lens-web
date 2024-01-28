@@ -1,12 +1,14 @@
 import { ref, type Ref } from 'vue'
-import { PlantName } from '@/model'
+import { PlantName } from '@/utils/model'
 import * as tf from '@tensorflow/tfjs';
 
-function roundOff(num: number, significance = 2) {
+const BUCKET_SIZE = 100
+
+function roundOff(num: number, significance = BUCKET_SIZE) {
   return Math.round(num * (10 ** significance)) / (10 ** significance)
 }
 
-function runningAverage(nums: number[], newValue: number, bucketSize = 50) {
+function runningAverage(nums: number[], newValue: number, bucketSize = 1) {
   if (nums.length >= bucketSize)
     nums.shift()
 
@@ -25,6 +27,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   const plants: { [key in PlantName]: number[] } = Object.fromEntries(
     Object.values(PlantName).map((name) => [name, [] as number[]])
   );
+  let plantsFeature: tf.Tensor3D;
   const prediction = ref<{ name: PlantName, probability: number }>()
 
   let model: any | undefined;
@@ -32,19 +35,23 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   async function init() {
     if (model === undefined) {
       const modelURL = "/model/model.json";
+      const featuresURL = "/model/features.json"
 
       model = await tf.loadLayersModel(modelURL);
       // await model.save('localstorage://plant-recognizer');
       model.summary()
       // warmup
       await model.predict(tf.zeros([1, 224, 224, 3]))
+
+      plantsFeature = tf.tensor3d(await (await fetch(featuresURL)).json())
+      console.log(plantsFeature.shape)
     }
 
     isInit.value = true
   }
 
-  // Preprocessing function
-  async function preprocess(video) {
+  // TODO: Preprocessing function
+  async function preprocess(video: HTMLVideoElement | tf.PixelData | ImageData | HTMLImageElement | HTMLCanvasElement | ImageBitmap) {
     const frame = tf.browser.fromPixels(video);
     // Assuming video is a tensor
     // const padded = tf.pad(normalized, [[0, 0], [0, 0], [0, 0], [0, 1]]); // Pad to [224, 224, 3]
@@ -55,36 +62,41 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   }
 
   // Postprocessing function
-  function postprocess(output): { label: string, probability: number }[] {
-    return Array.from(output.dataSync()).map((value, index) => ({ label: plantNameList[index], probability: value }))
+  function postprocess(feature: tf.Tensor): { label: string, probability: number }[] {
+    const distances = feature.sub(plantsFeature).pow(2).sum(2).sqrt().sum(1);
+    const probabilities = tf.scalar(1).sub<tf.Tensor1D>(distances.div(distances.max()))
+    // const normalizedProbabilities = probabilities.div<tf.Tensor1D>(probabilities.sum());
+
+    // console.log({ probabilities: probabilities.arraySync(), normalizedProbabilities: normalizedProbabilities.arraySync() })
+
+    return probabilities.arraySync().map((value, index) => ({ label: plantNameList[index], probability: value }))
   }
 
-  async function predict() {
+  async function predict(): Promise<{ name: PlantName; probability: number; } | undefined> {
     if (!model || !video.value)
       return
-
 
     const modelInput = await preprocess(video.value)
     const modelOutput = await model.predict(modelInput);
     const prediction = postprocess(modelOutput)
 
-    let output: any = null
+    let output: { name: PlantName; probability: number } | null = null
 
     for (const { label, probability } of prediction) {
       // @ts-ignore
       plants[label].push(probability)
       // @ts-ignore
-      if (plants[label].length > 100)
+      if (plants[label].length > BUCKET_SIZE)
         // @ts-ignore
         plants[label].shift()
       // @ts-ignore
       const avg = runningAverage(plants[label], probability)
 
-      if (!output || output.probability < avg * 100)
-        output = { name: label, probability: parseFloat(avg.toFixed(2)) * 100 }
+      if (avg * 100 > 5 && (output?.probability ?? 0) < avg * 100)
+        output = { name: label as PlantName, probability: avg * 100 }
     }
 
-    return output
+    return output as { name: PlantName; probability: number }
   }
 
   async function loop() {

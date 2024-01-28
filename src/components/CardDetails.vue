@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { icons } from '@/icons';
-import type { PlantDetails } from '@/model';
+import { icons } from '@/utils/icons';
+import type { PlantDetails } from '@/utils/model';
 
 const { details } = defineProps<{
   details?: PlantDetails
+  similarity?: number
 }>()
 </script>
 
 <template>
-  <aside class="flex-[2] flex flex-col bg-slate-800 max-w-[320px] h-screen overflow-x-hidden overflow-y-auto">
+  <aside class="flex-[2] flex flex-col bg-slate-800 md:max-w-[320px] h-screen overflow-x-hidden overflow-y-auto">
     <template v-if="!details">
       <div class="flex flex-col gap-1 justify-center items-center w-full h-full">
         <img :src="icons['plant']" alt="plant" class="w-16">
@@ -17,8 +18,12 @@ const { details } = defineProps<{
     </template>
     <template v-else>
       <div class="relative w-full aspect-[4/5] shadow-lg">
-        <img :src="`/plants/${details.id}.jpg`" alt="plant" class="w-full aspect-[4.75/3] bg-slate-600 object-cover">
-        <div class="flex flex-col gap-2 p-4">
+        <img :src="`/plants/${details.id}.jpg`" :alt="details.id"
+          class="w-full aspect-[4.75/3] bg-slate-600 object-cover">
+        <div class="relative flex flex-col gap-2 p-4">
+          <div class="absolute top-2 right-2 rounded-full px-3 py-[2px] pb-[5px] bg-slate-950 text-sm">
+            Similarity: {{ similarity?.toFixed(2) }}%
+          </div>
           <div>
             <span class="flex justify-between items-end">
               <h2 class="text-3xl">{{ details.name }}</h2>
@@ -42,4 +47,4 @@ const { details } = defineProps<{
       </div>
     </template>
   </aside>
-</template>
+</template>@/utils/model

@@ -13,6 +13,7 @@ Currently recognize the following
 
   1. Aloe Vera - 6
   1. Snake Plant
+  1. Golden Barrel Cactus
 
   1. Astilbe - 0
   1. Bellflower - 0
@@ -27,7 +28,6 @@ Currently recognize the following
   1. Daffodil
   1. Dahlia
   1. Dandelion
-  1. Golden Barrel Cactus
   1. Hibiscus
   1. Iris
   1. Jasmine

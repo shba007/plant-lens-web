@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { icons } from '@/icons';
+import { icons } from '@/utils/icons';
 
 withDefaults(defineProps<{
   icon?: string;
