@@ -11,7 +11,7 @@ import { RouterView } from 'vue-router'
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
-  scrollbar-width: 6px
+  scrollbar-width: 6px;
 }
 
 *::-webkit-scrollbar {
@@ -28,10 +28,9 @@ html {
 
 body {
   @apply relative min-h-screen text-black dark:text-white bg-light-400 dark:bg-dark-400 overflow-x-hidden;
-  @apply bg-[url("@/assets/images/dot-light.svg")] dark:bg-[url("@/assets/images/dot-dark.svg")] bg-left-top bg-repeat bg-auto;
 }
 
-.nuxt-icon>svg {
+.nuxt-icon > svg {
   @apply !m-0;
 }
 
