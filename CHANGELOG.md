@@ -1,5 +1,11 @@
 # plant-lens
 
+## 0.3.0
+
+### Minor Changes
+
+- 596a050: feat: pwa features added, flowers image added, color palette fixed
+
 ## 0.2.0
 
 ### Minor Changes
