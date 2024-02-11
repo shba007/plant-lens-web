@@ -1,6 +1,7 @@
 import { ref, type Ref } from 'vue'
 import { PlantName } from '@/utils/model'
 import * as tf from '@tensorflow/tfjs'
+import { useDB } from './database'
 
 const BUCKET_SIZE = 100
 
@@ -18,6 +19,7 @@ function runningAverage(nums: number[], newValue: number, bucketSize = 1) {
 const plantNameList = Object.values(PlantName).map((name) => name)
 
 export function useTF(video: Ref<HTMLVideoElement | undefined>) {
+  const { init: DBinit, get: DBget } = useDB()
   const isInit = ref(false)
   const enabled = ref(false)
   const fpsArray: number[] = []
@@ -26,7 +28,6 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   const plants: { [key in PlantName]: number[] } = Object.fromEntries(
     Object.values(PlantName).map((name) => [name, [] as number[]])
   )
-  let plantsFeature: tf.Tensor3D
   const prediction = ref<{ name: PlantName; probability: number }>()
 
   let model: any | undefined
@@ -34,7 +35,6 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   async function init() {
     if (model === undefined) {
       const modelURL = '/model/model.json'
-      const featuresURL = '/model/features.json'
 
       model = await tf.loadLayersModel(modelURL)
       // await model.save('localstorage://plant-recognizer');
@@ -42,23 +42,14 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
       // warmup
       await model.predict(tf.zeros([1, 224, 224, 3]))
 
-      plantsFeature = tf.tensor3d(await (await fetch(featuresURL)).json())
-      console.log(plantsFeature.shape)
+      await DBinit()
     }
 
     isInit.value = true
   }
 
   // TODO: Preprocessing function
-  async function preprocess(
-    video:
-      | HTMLVideoElement
-      | tf.PixelData
-      | ImageData
-      | HTMLImageElement
-      | HTMLCanvasElement
-      | ImageBitmap
-  ) {
+  async function preprocess(video: HTMLVideoElement) {
     const frame = tf.browser.fromPixels(video)
     // Assuming video is a tensor
     // const padded = tf.pad(normalized, [[0, 0], [0, 0], [0, 0], [0, 1]]); // Pad to [224, 224, 3]
@@ -69,16 +60,12 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   }
 
   // Postprocessing function
-  function postprocess(feature: tf.Tensor): { label: string; probability: number }[] {
-    const distances = feature.sub(plantsFeature).pow(2).sum(2).sqrt().sum(1)
-    const probabilities = tf.scalar(1).sub<tf.Tensor1D>(distances.div(distances.max()))
-    // const normalizedProbabilities = probabilities.div<tf.Tensor1D>(probabilities.sum());
-
-    // console.log({ probabilities: probabilities.arraySync(), normalizedProbabilities: normalizedProbabilities.arraySync() })
-
-    return probabilities
-      .arraySync()
+  async function postprocess(feature: tf.Tensor1D): Promise<{ label: string; probability: number }[]> {
+    const probabilities = DBget(feature)
+    const result = probabilities
       .map((value, index) => ({ label: plantNameList[index], probability: value }))
+
+    return result
   }
 
   async function predict(): Promise<{ name: PlantName; probability: number } | undefined> {
@@ -86,7 +73,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 
     const modelInput = await preprocess(video.value)
     const modelOutput = await model.predict(modelInput)
-    const prediction = postprocess(modelOutput)
+    const prediction = await postprocess(modelOutput)
 
     let output: { name: PlantName; probability: number } | null = null
 
@@ -100,7 +87,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
       // @ts-ignore
       const avg = runningAverage(plants[label], probability)
 
-      if (avg * 100 > 5 && (output?.probability ?? 0) < avg * 100)
+      if (avg * 100 > 10 && (output?.probability ?? 0) < avg * 100)
         output = { name: label as PlantName, probability: avg * 100 }
     }
 
@@ -113,7 +100,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
     const start = performance.now()
     tf.engine().startScope()
     prediction.value = await predict()
-    console.log(prediction.value)
+    // console.log({ ...prediction.value })
     tf.engine().endScope()
     const end = performance.now()
 
