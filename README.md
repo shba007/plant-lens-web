@@ -4,7 +4,7 @@
 
 # Plant Lens
 
-> Recognize a plant in realtime, offline.
+> Realtime plant recognizer.
 
 <p align="center">
   <a href="https://uptime.betterstack.com/?utm_source=status_badge">
@@ -18,18 +18,18 @@
 
 Currently can recognize following plants
 
-  1. Aloe Vera - 6
-  1. Snake Plant - 
-  1. Golden Barrel Cactus - 
+  1. Aloe Vera - 0
+  1. Snake Plant - 2
+  1. Golden Barrel Cactus - 0
 
-  1. Astilbe - 0
-  1. Bellflower - 0
+  1. Astilbe - 1
+  1. Bellflower - 0 -
   1. Black Eyed Susan - 2
   1. Bougainvillea - 5
   1. Calendula - 5
   1. California Poppy - 0
-
   1. Carnation - 2
+
   1. Chrysanthemum - 0
   1. Common Daisy - 7
   1. Coreopsis - 
@@ -39,8 +39,8 @@ Currently can recognize following plants
   1. Hibiscus - 
   1. Iris - 
   1. Jasmine - 
-
-  1. Lavender - 
+  1. Lavender -
+   
   1. Lily
   1. Lotus
   1. Magnolia
