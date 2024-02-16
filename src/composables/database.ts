@@ -36,12 +36,19 @@ export function useDB() {
   }
 
 
-  function get(feature: tf.Tensor1D): number[] {
-    const topKSize = 1
-    const distances = tf.tensor2d(embeddings).sub(feature).pow(2).sum<tf.Tensor1D>(1).sqrt()//.sum(1).div(tf.scalar(4))
-    const probabilities = distances.mul(-1 / 32).add<tf.Tensor1D>(1)
-    const { indices } = tf.topk(probabilities, topKSize);
+  function get(feature: tf.Tensor2D, topKSize = 10): number[] {
+    // const distances = tf.tensor2d(embeddings).sub(feature).pow(2).sum<tf.Tensor1D>(1).sqrt()//.sum(1).div(tf.scalar(4))
+    // const probabilities = distances.mul(-1 / 32).add<tf.Tensor1D>(1)
+    // console.log({ probabilities: probabilities.arraySync() })
+
+    const tensorEmbeddings = tf.tensor2d(embeddings)
+    const normEmbeddings = tensorEmbeddings.div<tf.Tensor2D>(tensorEmbeddings.norm());
+    const normFeature = feature.div<tf.Tensor1D>(feature.norm()).squeeze();
+    const probabilities = normEmbeddings.dot(normFeature) as tf.Tensor1D
+
+    const { indices } = tf.topk<tf.Tensor1D>(probabilities, topKSize);
     const topLabels = indices.arraySync().map(index => parseInt(labels[index]))
+    // console.log({ topLabels })
 
     const result = topLabels.reduce((totalList, label) => {
       totalList[label] += 1
