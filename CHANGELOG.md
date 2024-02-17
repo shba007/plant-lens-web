@@ -1,5 +1,11 @@
 # plant-lens
 
+## 0.4.0
+
+### Minor Changes
+
+- a6d85e9: refactor: cosine similarity algorithm added
+
 ## 0.3.1
 
 ### Patch Changes
