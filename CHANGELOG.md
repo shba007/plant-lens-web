@@ -1,5 +1,11 @@
 # plant-lens
 
+## 0.3.1
+
+### Patch Changes
+
+- adbaf25: chore: assets updated
+
 ## 0.3.0
 
 ### Minor Changes
