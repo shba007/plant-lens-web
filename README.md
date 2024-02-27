@@ -16,11 +16,11 @@
 
 ## Feature
 
-Currently can recognize following plants
+Currently can recognize the following plants
 
   1. Aloe Vera - 0
-  1. Snake Plant - 2
-  1. Golden Barrel Cactus - 0
+  1. Snake Plant - 9
+  1. Golden Barrel Cactus - 8
 
   1. Astilbe - 1
   1. Bellflower - 0 -
@@ -41,17 +41,17 @@ Currently can recognize following plants
   1. Jasmine - 
   1. Lavender -
    
-  1. Lily
-  1. Lotus
-  1. Magnolia
-  1. Marigold
+  1. Lily - 
+  1. Lotus - 
+  1. Magnolia - 
+  1. Marigold - 
   1. Rose - 9
-  1. Sunflower
-  1. Tulip
-  1. Water Lily
+  1. Sunflower - 
+  1. Tulip - 
+  1. Water Lily - 
+
+  1. Geranium
+  1. Orchid
 
 ## Vision and Roadmap
-
-  - Orchid
   - Peony
-  - Geranium
