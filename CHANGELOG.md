@@ -1,5 +1,11 @@
 # plant-lens
 
+## 0.4.1
+
+### Patch Changes
+
+- 9459672: style: converted to new color theme
+
 ## 0.4.0
 
 ### Minor Changes
