@@ -4,7 +4,7 @@
 
 # Plant Lens
 
-> Realtime plant recognizer.
+> A real-time, offline web app for instant plant recognition. Identify plants effortlessly anytime, anywhere.
 
 <p align="center">
   <a href="https://uptime.betterstack.com/?utm_source=status_badge">
