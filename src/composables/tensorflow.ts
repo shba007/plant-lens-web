@@ -60,7 +60,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   }
 
   // Postprocessing function
-  async function postprocess(feature: tf.Tensor1D): Promise<{ label: string; probability: number }[]> {
+  async function postprocess(feature: tf.Tensor2D): Promise<{ label: string; probability: number }[]> {
     const probabilities = DBget(feature)
     const result = probabilities
       .map((value, index) => ({ label: plantNameList[index], probability: value }))
