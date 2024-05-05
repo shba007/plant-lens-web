@@ -2,7 +2,7 @@
   "name": "plant-lens",
   "description": "A real-time, offline web app for instant plant recognition. Identify plants effortlessly anytime, anywhere.",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "type": "module",
   "engines": {

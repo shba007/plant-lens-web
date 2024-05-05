@@ -1,5 +1,11 @@
 # plant-lens
 
+## 0.4.2
+
+### Patch Changes
+
+- deb9b03: chore: pkgs updated, ci/cd files added
+
 ## 0.4.1
 
 ### Patch Changes
