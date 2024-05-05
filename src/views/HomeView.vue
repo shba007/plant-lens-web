@@ -84,7 +84,7 @@ onBeforeMount(() => {
       class="flex-[4] md:flex-[5] relative grid grid-rows-3 grid-cols-3 justify-between justify-items-center items-center p-4 md:p-6 overflow-hidden">
       <div
         class="relative row-start-1 col-start-2 col-span-2 self-start justify-self-end flex gap-2 justify-between items-center px-3 py-1 rounded-full z-10"
-        :class="[isModelInit ? 'bg-primary-500' : 'bg-blue-500']">
+        :class="[isModelInit ? 'bg-primary-500' : 'bg-warning-500']">
         <img :src="icons['neural-engine']" alt="neural engine" class="w-7" />
         <span class="text-black font-medium">FPS {{ fps }}</span>
       </div>
