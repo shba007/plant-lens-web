@@ -34,7 +34,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 
   async function init() {
     if (model === undefined) {
-      const modelURL = '/model/model.json'
+      const modelURL = '/plant-lens-web/model/model.json'
 
       model = await tf.loadLayersModel(modelURL)
       // await model.save('localstorage://plant-recognizer');

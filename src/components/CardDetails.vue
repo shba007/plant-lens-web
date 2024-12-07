@@ -18,7 +18,7 @@ const { details } = defineProps<{
     </template>
     <template v-else>
       <div class="relative w-full aspect-[4/5] shadow-lg">
-        <img :src="`/plants/${details.id}.jpg`" :alt="details.id"
+        <img :src="`/plant-lens-web/plants/${details.id}.jpg`" :alt="details.id"
           class="w-full aspect-[4.75/3] bg-dark-600 object-cover" />
         <div class="relative flex flex-col gap-2 p-4">
           <div class="absolute top-2 right-2 rounded-full px-3 py-[2px] pb-[5px] bg-dark-400 text-sm">

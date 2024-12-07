@@ -14,7 +14,7 @@ export function useDB() {
     if (isInit.value)
       return
 
-    const embeddingURL = '/model/features.json'
+    const embeddingURL = '/plant-lens-web/model/features.json'
 
     data = await (await fetch(embeddingURL)).json()
     totalClassCount = Object.keys(data).length
