@@ -14,7 +14,6 @@ env:
   REPO: ${{ github.repository }}
   REGISTRY: ${{ vars.REGISTRY }}
   USERNAME: ${{ vars.USERNAME }}
-  NODE_ENV: production
   VITE_BASE_URL: '/plant-lens'
 
 jobs:
