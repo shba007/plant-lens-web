@@ -1,6 +1,6 @@
 {
   "name": "plant-lens-web",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "A real-time, offline web app for instant plant recognition. Identify plants effortlessly anytime, anywhere.",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
   "license": "GPL-3.0-only",

@@ -1,5 +1,18 @@
 # plant-lens
 
+## 0.4.3
+
+### Patch Changes
+
+- 3ccfd05: refactor: added environment configuration, husky hooks, and Docker support
+- 0492c96: chore(deps): update dependencies
+
+  feat(app): add repository and volta config to package.json
+
+  style(app): remove dark mode specific styling from scrollbar
+
+  fix: basePath updated
+
 ## 0.4.2
 
 ### Patch Changes
