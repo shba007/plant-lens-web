@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { icons } from '@/utils/icons'
 import type { PlantDetails } from '@/utils/model'
 
@@ -6,6 +7,8 @@ const { details } = defineProps<{
   details?: PlantDetails
   similarity?: number
 }>()
+
+const imagePath = computed(() => `${import.meta.env.VITE_BASE_URL}/plants/${details.id}.jpg`)
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const { details } = defineProps<{
     </template>
     <template v-else>
       <div class="relative aspect-[4/5] w-full shadow-lg">
-        <img :src="`${import.meta.env.VITE_BASE_URL}/plants/${details.id}.jpg`" :alt="details.id" class="aspect-[4.75/3] w-full bg-dark-600 object-cover" />
+        <img :src="imagePath" :alt="details.id" class="aspect-[4.75/3] w-full bg-dark-600 object-cover" />
         <div class="relative flex flex-col gap-2 p-4">
           <div class="absolute right-2 top-2 rounded-full bg-dark-400 px-3 py-[2px] pb-[5px] text-sm">Similarity: {{ similarity?.toFixed(2) }}%</div>
           <div>
