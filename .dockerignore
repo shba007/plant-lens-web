@@ -1,3 +1,8 @@
+# Git/Github
+.git
+.github
+.gitignore
+
 # Vue dev/build outputs
 dist
 
@@ -19,3 +24,7 @@ coverage
 # Env files
 .env*
 !.env.example
+
+# Dockerfile
+.dockerignore
+Dockerfile

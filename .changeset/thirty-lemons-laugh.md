@@ -1,5 +1,5 @@
 ---
-'plant-lens': patch
+'plant-lens-web': patch
 ---
 
 chore(deps): update dependencies

@@ -1,0 +1,10 @@
+name: 'plant-lens'
+services:
+  web:
+    container_name: 'plant-lens'
+    image: 'ghcr.io/shba007/plant-lens-web:latest'
+    restart: on-failure:3
+    env_file:
+      - .env.prod
+    ports:
+      - 3100:8080

@@ -24,23 +24,18 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   const enabled = ref(false)
   const fpsArray: number[] = []
   const fps = ref(0)
-  // @ts-ignore
-  const plants: { [key in PlantName]: number[] } = Object.fromEntries(
-    Object.values(PlantName).map((name) => [name, [] as number[]])
-  )
+
   const prediction = ref<{ name: PlantName; probability: number }>()
 
-  let model: any | undefined
+  let model: tf.LayersModel | undefined
 
   async function init() {
     if (model === undefined) {
-      const modelURL = '/plant-lens-web/model/model.json'
-
+      const modelURL = `${import.meta.env.VITE_BASE_URL}/model/model.json`
       model = await tf.loadLayersModel(modelURL)
-      // await model.save('localstorage://plant-recognizer');
+
       model.summary()
-      // warmup
-      await model.predict(tf.zeros([1, 224, 224, 3]))
+      model.predict(tf.zeros([1, 224, 224, 3]))
 
       await DBinit()
     }
@@ -60,10 +55,9 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
   }
 
   // Postprocessing function
-  async function postprocess(feature: tf.Tensor2D): Promise<{ label: string; probability: number }[]> {
+  async function postprocess(feature: tf.Tensor2D): Promise<{ label: PlantName; probability: number }[]> {
     const probabilities = DBget(feature)
-    const result = probabilities
-      .map((value, index) => ({ label: plantNameList[index], probability: value }))
+    const result = probabilities.map((value, index) => ({ label: plantNameList[index], probability: value }))
 
     return result
   }
@@ -72,23 +66,18 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
     if (!model || !video.value) return
 
     const modelInput = await preprocess(video.value)
-    const modelOutput = await model.predict(modelInput)
+    const modelOutput = model.predict(modelInput) as tf.Tensor2D
     const prediction = await postprocess(modelOutput)
 
     let output: { name: PlantName; probability: number } | null = null
 
     for (const { label, probability } of prediction) {
-      // @ts-ignore
-      plants[label].push(probability)
-      // @ts-ignore
-      if (plants[label].length > BUCKET_SIZE)
-        // @ts-ignore
-        plants[label].shift()
-      // @ts-ignore
-      const avg = runningAverage(plants[label], probability)
+      // plants[label].push(probability)
 
-      if (avg * 100 > 10 && (output?.probability ?? 0) < avg * 100)
-        output = { name: label as PlantName, probability: avg * 100 }
+      // if (plants[label].length > BUCKET_SIZE) plants[label].shift()
+      // const avg = runningAverage(plants[label], probability)
+
+      if ((output?.probability ?? 0) < probability * 100) output = { name: label as PlantName, probability: probability * 100 }
     }
 
     return output as { name: PlantName; probability: number }

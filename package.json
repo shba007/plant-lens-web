@@ -1,12 +1,12 @@
 {
-  "name": "plant-lens",
+  "name": "plant-lens-web",
   "version": "0.4.2",
   "description": "A real-time, offline web app for instant plant recognition. Identify plants effortlessly anytime, anywhere.",
   "author": "Shirsendu Bairagi <shirsendu2001@gmail.com>",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shba007/plant-lens.git"
+    "url": "git+https://github.com/shba007/plant-lens-web.git"
   },
   "type": "module",
   "private": true,
@@ -15,50 +15,62 @@
   },
   "engines": {
     "node": "^20.15.0 || ^22.11.0",
-    "npm": "^10.9.0"
+    "pnpm": "^9.15.0"
   },
-  "packageManager": "npm@10.9.2",
+  "packageManager": "pnpm@9.15.2",
   "scripts": {
+    "prepare": "husky || true",
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "detect": "gitleaks git --verbose",
+    "lint": "eslint . --fix",
+    "format": "prettier . --write",
     "test:unit": "vitest",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build --force",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "test:e2e": "playwright test",
+    "type-check": "vue-tsc --build",
+    "build": "vite build",
+    "preview": "vite preview",
+    "docker:build": "docker build --build-arg VERSION=dev --build-arg BUILD_TIME=now -t plant-lens:dev .",
+    "docker:start": "docker run --detach --name plant-lens-dev -p 3100:8080 plant-lens:dev",
+    "tunnel": "untun tunnel --port 3100 http://localhost:3100"
   },
   "dependencies": {
-    "@changesets/cli": "^2.27.10",
     "@tensorflow/tfjs": "^4.22.0",
-    "@vueuse/core": "^12.0.0",
-    "@vueuse/math": "^12.0.0",
+    "@vueuse/core": "^12.2.0",
+    "@vueuse/math": "^12.2.0",
     "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.10.4",
-    "@tsconfig/node18": "^18.2.4",
+    "@changesets/cli": "^2.27.11",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@playwright/test": "^1.49.1",
+    "@tsconfig/node22": "^22.0.0",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.10.3",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/eslint-plugin": "1.1.23",
     "@vue/eslint-config-prettier": "^10.1.0",
-    "@vue/eslint-config-typescript": "^14.1.4",
+    "@vue/eslint-config-typescript": "^14.2.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.16.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-playwright": "^2.1.0",
     "eslint-plugin-vue": "^9.32.0",
+    "husky": "^9.1.7",
     "jsdom": "^25.0.1",
-    "npm-run-all2": "^7.0.1",
+    "npm-run-all2": "^7.0.2",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
-    "tailwindcss": "^3.4.16",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",
-    "vite": "^6.0.3",
+    "vite": "^6.0.6",
     "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-vue-devtools": "^7.6.8",
     "vitest": "^2.1.8",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   }
 }

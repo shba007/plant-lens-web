@@ -23,11 +23,11 @@ import { RouterView } from 'vue-router'
 }
 
 html {
-  @apply relative scroll-smooth overflow-x-hidden;
+  @apply relative overflow-x-hidden scroll-smooth;
 }
 
 body {
-  @apply relative min-h-screen text-black dark:text-white bg-light-400 dark:bg-dark-400 overflow-x-hidden;
+  @apply relative min-h-screen overflow-x-hidden bg-light-400 text-black dark:bg-dark-400 dark:text-white;
 }
 
 .nuxt-icon > svg {

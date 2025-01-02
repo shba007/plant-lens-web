@@ -4,6 +4,10 @@ dist
 # Node dependencies
 node_modules
 
+# Package Manager
+package.json
+pnpm-lock.yaml
+
 # Logs
 logs
 *.log
@@ -19,3 +23,6 @@ coverage
 # Env files
 .env*
 !.env.example
+
+# Model files
+public/model

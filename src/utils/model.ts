@@ -26,7 +26,7 @@ export enum PlantName {
   SnakePlant = 'snake-plant',
   Sunflower = 'sunflower',
   Tulip = 'tulip',
-  WaterLily = 'water-lily'
+  WaterLily = 'water-lily',
 }
 
 export interface PlantDetails {
