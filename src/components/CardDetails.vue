@@ -8,7 +8,7 @@ const { details } = defineProps<{
   similarity?: number
 }>()
 
-const imagePath = computed(() => `${import.meta.env.VITE_BASE_URL}/plants/${details.id}.jpg`)
+const imagePath = computed(() => `${import.meta.env.VITE_BASE_URL}/plants/${details?.id}.jpg`)
 </script>
 
 <template>

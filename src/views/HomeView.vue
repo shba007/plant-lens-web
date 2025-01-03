@@ -76,7 +76,7 @@ onBeforeMount(() => {
         <span class="font-medium text-black">FPS {{ fps }}</span>
       </div>
       <div class="col-start-2 row-start-2 flex items-center justify-center gap-3">
-        <img :src="`${process.env.VITE_BASE_URL}/logo.svg`" alt="logo" class="w-20" />
+        <img src="/logo.svg" alt="logo" class="w-20" />
         <h1 class="whitespace-nowrap text-3xl">Plant Lens</h1>
       </div>
       <video ref="video" v-if="streamEnabled" class="col-span-3 col-start-1 row-span-3 row-start-1 h-full w-full rounded-md object-cover md:aspect-video md:h-fit" autoplay muted playsinline />
