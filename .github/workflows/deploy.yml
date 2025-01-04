@@ -14,7 +14,7 @@ env:
   REPO: ${{ github.repository }}
   REGISTRY: ${{ vars.REGISTRY }}
   USERNAME: ${{ vars.USERNAME }}
-  VITE_BASE_URL: '/plant-lens-web'
+  VITE_APP_BASE_URL: '/plant-lens-web'
 
 jobs:
   build-static:

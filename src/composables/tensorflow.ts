@@ -31,7 +31,7 @@ export function useTF(video: Ref<HTMLVideoElement | undefined>) {
 
   async function init() {
     if (model === undefined) {
-      const modelURL = `${import.meta.env.VITE_BASE_URL}/model/model.json`
+      const modelURL = `./model/model.json`
       model = await tf.loadLayersModel(modelURL)
 
       model.summary()

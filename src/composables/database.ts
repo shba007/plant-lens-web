@@ -12,7 +12,7 @@ export function useDB() {
   async function init() {
     if (isInit.value) return
 
-    const embeddingURL = `${import.meta.env.VITE_BASE_URL}/model/features.json`
+    const embeddingURL = `./model/features.json`
 
     data = await (await fetch(embeddingURL)).json()
     totalClassCount = Object.keys(data).length
